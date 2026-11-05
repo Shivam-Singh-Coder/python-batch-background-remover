@@ -34,30 +34,6 @@ git clone https://github.com/Shivam-Singh-Coder/python-batch-background-remover.
 cd python-batch-background-remover
 ```
 
-Optionally create and activate a virtual environment:
-
-```bash
-python -m venv .venv
-```
-
-Windows PowerShell:
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Windows Command Prompt:
-
-```cmd
-.venv\Scripts\activate
-```
-
-Linux / macOS:
-
-```bash
-source .venv/bin/activate
-```
-
 Install the dependencies:
 
 ```bash
@@ -131,7 +107,7 @@ Check that the folder path is correct and that the supported image files are dir
 
 ### Missing module error
 
-Activate your virtual environment if you created one, then install the dependencies:
+Install the dependencies with:
 
 ```bash
 python -m pip install -r requirements.txt
