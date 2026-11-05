@@ -1,229 +1,62 @@
-
 # Python Batch Background Remover
 
-A simple, AI-powered Python tool that automatically removes backgrounds from multiple images in a selected folder and saves the results as transparent PNG files.
+A simple, locally run Python tool that removes backgrounds from every supported image in a folder and saves the results as transparent PNG files.
 
-Built using **Python, rembg, and Pillow**, this tool makes bulk image background removal easy without manually editing each image.
+It uses [`rembg`](https://github.com/danielgatis/rembg) with the `u2net` model and Pillow for image handling. No API key is required.
 
 ## Features
 
-- AI-powered background removal
-- Batch processing of multiple images
-- Supports JPG, JPEG, PNG, WEBP, BMP, and TIFF
-- Automatically creates an output folder
-- Saves processed images as transparent PNG files
-- Preserves original images
-- Accepts folder paths directly from the user
-- Runs locally without requiring an API key
-- Supports recursive folder processing
-- Handles individual image processing errors
+- Processes multiple images in one folder (not subfolders).
+- Supports `.jpg`, `.jpeg`, `.png`, `.webp`, `.bmp`, `.tif`, and `.tiff` files (case-insensitive).
+- Saves output as PNG in a `background_removed` subfolder inside the selected folder.
+- Leaves the original images unchanged.
+- Continues processing other images if an individual image fails.
+- Prompts for a folder path and accepts paths wrapped in single or double quotes.
 
-## Technologies Used
+## Requirements
 
-| Technology | Purpose |
-|------------|---------|
-| Python | Core programming language |
-| rembg | AI-powered background removal |
-| Pillow | Image processing |
-| ONNX Runtime | AI model inference |
-| Virtual Environment | Dependency isolation |
+- Python installed and available as `python` (or use `python3` on systems where that is the Python command).
+- An internet connection the first time the `u2net` model is needed so it can be downloaded. Once cached, model processing can work offline.
 
-## Project Structure
-
-```text
-python-batch-background-remover/
-│
-├── bgrmv/                  # Virtual environment (not committed)
-├── images/                 # Input images (optional)
-│   ├── image1.jpg
-│   ├── image2.png
-│   └── image3.webp
-│
-├── remove_backgrounds.py   # Main Python script
-├── requirements.txt        # Project dependencies
-├── README.md               # Documentation
-└── .gitignore              # Git ignored files
-```
-
-The `background_removed` output directory is automatically created inside the selected input folder.
-
-## Installation
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/python-batch-background-remover.git
-cd python-batch-background-remover
-```
-
-Replace `YOUR_USERNAME` with your GitHub username.
-
-### 2. Create a Virtual Environment
-
-Python 3.11 or 3.12 is recommended.
-
-```bash
-python -m venv bgrmv
-```
-
-### 3. Activate the Virtual Environment
-
-**Windows CMD:**
-
-```cmd
-bgrmv\Scripts\activate
-```
-
-**Windows PowerShell:**
-
-```powershell
-.\bgrmv\Scripts\Activate.ps1
-```
-
-**Linux / macOS:**
-
-```bash
-source bgrmv/bin/activate
-```
-
-### 4. Install Dependencies
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-The `requirements.txt` file contains:
+Dependencies are listed in `requirements.txt`:
 
 ```text
 rembg[cpu]
 Pillow
 ```
 
-## Usage
+## Installation
 
-### Interactive Mode
-
-Run the script:
+Clone the repository and enter its directory:
 
 ```bash
-python remove_backgrounds.py
+git clone https://github.com/Shivam-Singh-Coder/python-batch-background-remover.git
+cd python-batch-background-remover
 ```
 
-When prompted, enter the full path of the folder containing your images:
-
-```text
-Enter the full path of the image folder: E:\MyImages
-```
-
-The script automatically detects supported images and removes their backgrounds.
-
-### Command-Line Mode
-
-You can also provide the folder path directly:
+Optionally create and activate a virtual environment:
 
 ```bash
-python remove_backgrounds.py "E:\MyImages"
+python -m venv .venv
 ```
 
-### Recursive Processing
+Windows PowerShell:
 
-To process images inside subfolders as well:
-
-```bash
-python remove_backgrounds.py "E:\MyImages" --recursive
+```powershell
+.venv\Scripts\Activate.ps1
 ```
 
-## Input and Output Example
-
-**Before processing:**
-
-```text
-E:\MyImages\
-│
-├── product1.jpg
-├── product2.jpeg
-└── product3.webp
-```
-
-**After processing:**
-
-```text
-E:\MyImages\
-│
-├── product1.jpg
-├── product2.jpeg
-├── product3.webp
-│
-└── background_removed\
-    ├── product1.png
-    ├── product2.png
-    └── product3.png
-```
-
-All processed images are saved in PNG format with transparent backgrounds.
-
-The original images remain unchanged.
-
-## Example Terminal Output
-
-```text
-Enter the full path of the image folder: E:\MyImages
-
-Found 3 image(s).
-Loading background removal model...
-
-[1/3] OK: product1.png
-[2/3] OK: product2.png
-[3/3] OK: product3.png
-
-Finished: 3/3 successful.
-```
-
-## Supported Image Formats
-
-| Input Format | Output Format |
-|--------------|---------------|
-| JPG | PNG |
-| JPEG | PNG |
-| PNG | PNG |
-| WEBP | PNG |
-| BMP | PNG |
-| TIFF | PNG |
-
-## How It Works
-
-1. The user provides an image folder path.
-2. The script scans the folder for supported image files.
-3. The rembg library loads an AI background removal model.
-4. Each image is processed to separate the foreground from its background.
-5. Processed images are saved as transparent PNG files.
-6. The script displays the processing results.
-
-## Important Notes
-
-- An internet connection is required for the initial AI model download.
-- Subsequent processing can run offline once the model is cached.
-- Processing speed depends on image resolution and system hardware.
-- Complex backgrounds, fine hair, and transparent objects may affect output quality.
-- Large image batches may require additional RAM.
-
-## Troubleshooting
-
-### Virtual Environment Activation Error
-
-Make sure the environment directory exists:
+Windows Command Prompt:
 
 ```cmd
-dir bgrmv
+.venv\Scripts\activate
 ```
 
-If necessary, recreate it:
+Linux / macOS:
 
-```cmd
-python -m venv bgrmv
+```bash
+source .venv/bin/activate
 ```
-
-### Missing Module Error
 
 Install the dependencies:
 
@@ -231,38 +64,87 @@ Install the dependencies:
 python -m pip install -r requirements.txt
 ```
 
-### Incorrect Folder Path
+## Usage
 
-Make sure the provided path exists and contains supported images.
+Run the script:
 
-For paths containing spaces, use quotation marks when passing the path as a command-line argument.
+```bash
+python remove_backgrounds.py
+```
 
-## Future Improvements
+When prompted, enter the path to the folder containing the images:
 
-- Graphical user interface (GUI)
-- Drag-and-drop folder selection
-- Background replacement with custom colors
-- Image resizing and compression
-- GPU acceleration support
-- Progress bar for large batches
-- Before-and-after image previews
+```text
+Enter the full path of the image folder: "C:\Users\you\Pictures\products"
+```
+
+The script scans files directly in that folder, loads the `u2net` model, and writes the results to `background_removed` inside the input folder.
+
+## Example
+
+Before:
+
+```text
+products/
+├── mug.jpg
+├── shirt.png
+└── logo.webp
+```
+
+After running the script:
+
+```text
+products/
+├── mug.jpg
+├── shirt.png
+├── logo.webp
+└── background_removed/
+    ├── mug.png
+    ├── shirt.png
+    └── logo.png
+```
+
+When two input files would produce the same output name (for example, `photo.jpg` and `photo.png`), the later output uses the input extension in its name, such as `photo_jpg.png`. Existing outputs may be replaced when the script is run again.
+
+Example terminal output:
+
+```text
+Enter the full path of the image folder: C:\Users\you\Pictures\products
+Found 3 image(s). Loading AI model...
+[1/3] OK: logo.webp -> logo.png
+[2/3] OK: mug.jpg -> mug.png
+[3/3] OK: shirt.png -> shirt.png
+Finished: 3/3 successful. Output: C:\Users\you\Pictures\products\background_removed
+```
+
+## Notes
+
+- The script does not scan subfolders or accept a folder path as a command-line argument; it asks for the path interactively.
+- Processing time depends on image size and computer hardware. Large batches may use substantial memory.
+- Results can vary, especially for fine details, complex backgrounds, or transparent objects.
+
+## Troubleshooting
+
+### `Invalid folder` or no supported images found
+
+Check that the folder path is correct and that the supported image files are directly inside the folder (not only in subfolders).
+
+### Missing module error
+
+Activate your virtual environment if you created one, then install the dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### Model download or network error
+
+The model may need to download the first time it runs. Check your internet connection and run the script again.
 
 ## Contributing
 
-Contributions, bug reports, and feature suggestions are welcome.
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Make your changes.
-4. Commit your changes.
-5. Open a pull request.
+Bug reports, suggestions, and pull requests are welcome.
 
 ## License
 
-No license is specified yet. Add a LICENSE file if you want to define how others may use, modify, and distribute this project.
-
----
-
-**Python Batch Background Remover**
-
-Automate background removal and simplify bulk image processing with Python.
+No license is specified yet. Add a `LICENSE` file to define how this project may be used, modified, and distributed.
